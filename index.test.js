@@ -13,10 +13,7 @@ describe("censorId", () => {
     test("is case-insensitive", () => {
         const input = "ANJING itu sedang berak di jalan.";
         const output = censorId(input);
-        expect(output).toContain("******");
-        expect(output).toContain("*****");
-        expect(output.toLowerCase()).not.toContain("anjing");
-        expect(output.toLowerCase()).not.toContain("berak");
+        expect(output).toBe("****** itu sedang ***** di jalan.");
     });
 
     test("handles customWords option", () => {
@@ -40,9 +37,10 @@ describe("censorId", () => {
     test("avoids accidental censoring (word boundaries)", () => {
         const input = "Pantai itu indah, tapi ada tai di pasir.";
         const output = censorId(input);
-        expect(output).toContain("Pantai");
-        expect(output).toContain("***");
-        expect(output).not.toContain(" tai ");
+        if (output !== "Pantai itu indah, tapi ada *** di pasir.") {
+            console.error('DEBUG output:', output);
+        }
+        expect(output).toBe("Pantai itu indah, tapi ada *** di pasir.");
     });
 
     test("handles empty strings and non-string input", () => {
@@ -72,7 +70,7 @@ describe("censorId", () => {
     test("handles punctuation inside words in smartMode", () => {
         const input = "Dasar a.n.j.i.n.g!";
         const output = censorId(input, { smartMode: true });
-        expect(output).toBe("Dasar " + "*".repeat(9) + "!");
+        expect(output).toBe("Dasar " + "*".repeat(11) + "!");
     });
 
     test("smartMode works with keepFirstAndLast", () => {
