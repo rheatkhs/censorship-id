@@ -1,5 +1,21 @@
 const defaultDictionary = require("./dictionary");
 
+// Leetspeak mapping
+const leetMap = {
+    "4": "a",
+    "3": "e",
+    "1": "i",
+    "0": "o",
+    "5": "s",
+    "7": "t",
+    "8": "b",
+    "9": "g",
+    "@": "a",
+    "$": "s",
+    "!": "i",
+    "(": "c"
+};
+
 /**
  * Censor Indonesian profanity and inappropriate words.
  *
@@ -8,6 +24,7 @@ const defaultDictionary = require("./dictionary");
  * @param {string} options.mask - The character used to mask the words (default is '*').
  * @param {string[]} options.customWords - An array of additional words to censor.
  * @param {boolean} options.keepFirstAndLast - If true, keeps the first and last letters visible (default is false).
+ * @param {boolean} options.smartMode - If true, handles leetspeak and repeated characters (default is false).
  * @returns {string} - The censored text.
  */
 function censorId(text, options = {}) {
@@ -18,25 +35,41 @@ function censorId(text, options = {}) {
     const {
         mask = "*",
         customWords = [],
-        keepFirstAndLast = false
+        keepFirstAndLast = false,
+        smartMode = false
     } = options;
 
-    // Merge default dictionary with custom words
-    const wordsToCensor = [...new Set([...defaultDictionary, ...customWords])];
-
-    // Escape special characters in words for safety in Regex
-    const escapedWords = wordsToCensor.map(word =>
-        word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
-    );
+    // Merge default dictionary with custom words and sort by length descending
+    const wordsToCensor = [...new Set([...defaultDictionary, ...customWords])].sort((a, b) => b.length - a.length);
 
     let censoredText = text;
 
     // Iterate over each word and apply masking
-    escapedWords.forEach(word => {
-        // Regex with word boundaries (\b) and case-insensitive flag (i)
-        // Note: \b doesn't work well with non-ASCII characters, but for Indonesian it's generally fine.
-        // However, for more robustness with various symbols, we use a pattern that matches word start/end.
-        const regex = new RegExp(`(?<=\\s|^|[^a-zA-Z0-9])${word}(?=\\s|$|[^a-zA-Z0-9])`, "gi");
+    wordsToCensor.forEach(word => {
+        let searchPattern;
+        if (smartMode) {
+            // Create a pattern that allows:
+            // 1. Any number of repeats for each character (e.g., a+n+j+i+n+g+)
+            // 2. Optional non-alphanumeric characters between letters (e.g., a[...]*n[...]*j)
+            // 3. Mapping of leetspeak characters
+
+            const charPatterns = Array.from(word).map((char, index) => {
+                const lowerChar = char.toLowerCase();
+                const leetChars = Object.keys(leetMap).filter(key => leetMap[key] === lowerChar);
+                const variants = [lowerChar, ...leetChars].map(c => c.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+
+                // Only allow non-alphanumeric between characters, not after the last one
+                const suffix = index === word.length - 1 ? "+" : "+[^a-zA-Z0-9]*";
+                return `[${variants.join("")}]${suffix}`;
+            });
+
+            searchPattern = charPatterns.join("");
+        } else {
+            // Standard escaping for regex
+            searchPattern = word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        const regex = new RegExp(`(?<=\\s|^|[^a-zA-Z0-9])${searchPattern}(?=\\s|$|[^a-zA-Z0-9])`, "gi");
 
         censoredText = censoredText.replace(regex, (match) => {
             if (keepFirstAndLast && match.length > 2) {

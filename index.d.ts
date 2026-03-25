@@ -18,6 +18,12 @@ export interface CensorIdOptions {
      * @default false
      */
     keepFirstAndLast?: boolean;
+
+    /**
+     * If true, handles leetspeak (e.g., "4njing") and repeated characters (e.g., "baaaaaaabiii").
+     * @default false
+     */
+    smartMode?: boolean;
 }
 
 /**

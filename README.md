@@ -7,7 +7,8 @@ A robust and simple npm package for detecting and masking Indonesian profanity, 
 
 ## Features
 
-- **Comprehensive Dictionary**: Pre-loaded with hundreds of common Indonesian bad words.
+- **Smart Detection**: Optional `smartMode` to handle leetspeak (e.g., `4njing`), repeated characters (e.g., `baaaaaabiii`), and punctuation insertion (e.g., `a.n.j.i.n.g`).
+- **Comprehensive Dictionary**: Pre-loaded with common Indonesian bad words.
 - **Regex Powered**: Uses word boundaries to avoid false positives (e.g., masking "tai" but not "pantai").
 - **Customizable**: Add your own words to the list and choose your mask character.
 - **Keep First and Last**: Option to keep the first and last letters visible for better context.
@@ -54,6 +55,15 @@ console.log(visible);
 const customWords = censorId("Kamu sangat malas!", { customWords: ['malas'] });
 console.log(customWords);
 // Output: Kamu sangat *****!
+
+// 4. Smart Mode (handles leetspeak & repeats)
+const smart = censorId("D4s4r 4njing!", { smartMode: true });
+console.log(smart);
+// Output: D4s4r ******!
+
+const repeats = censorId("baaaaaaaabiiiiii", { smartMode: true });
+console.log(repeats);
+// Output: ****************
 ```
 
 ## API Reference
@@ -65,6 +75,7 @@ console.log(customWords);
   - **`mask`** (string): The character used to mask words (default: `*`).
   - **`customWords`** (string[]): Additional words to censor.
   - **`keepFirstAndLast`** (boolean): If `true`, the first and last letters of the word remain visible (default: `false`).
+  - **`smartMode`** (boolean): If `true`, detects leetspeak and repeated characters (default: `false`).
 
 ## License
 

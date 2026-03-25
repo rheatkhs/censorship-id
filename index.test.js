@@ -56,4 +56,28 @@ describe("censorId", () => {
         const output = censorId(input, { customWords: ["@#$%^"] });
         expect(output).toBe("Jangan ***** kamu!");
     });
+
+    test("handles leetspeak in smartMode", () => {
+        const input = "Dasar 4njing, 8481 kau!";
+        const output = censorId(input, { smartMode: true });
+        expect(output).toMatch(/Dasar \*+, \*+ kau!/);
+    });
+
+    test("handles repeated characters in smartMode", () => {
+        const input = "Peeeeeereeeeeeek lo!";
+        const output = censorId(input, { smartMode: true });
+        expect(output).toMatch(/^\*+ lo!$/);
+    });
+
+    test("handles punctuation inside words in smartMode", () => {
+        const input = "Dasar a.n.j.i.n.g!";
+        const output = censorId(input, { smartMode: true });
+        expect(output).toBe("Dasar " + "*".repeat(9) + "!");
+    });
+
+    test("smartMode works with keepFirstAndLast", () => {
+        const input = "4njing!";
+        const output = censorId(input, { smartMode: true, keepFirstAndLast: true });
+        expect(output).toBe("4****g!");
+    });
 });
