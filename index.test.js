@@ -1,4 +1,4 @@
-const { censorId } = require("./index");
+const { censorId } = require(".");
 
 describe("censorId", () => {
     test("censors default profanity", () => {
