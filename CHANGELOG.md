@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.0.1] - 2026-07-17
+
+### Added
+
+- Added MIT `LICENSE` file.
+- Added `repository`, `bugs`, `homepage` fields to `package.json`.
+- Added `"sideEffects": false` for better tree-shaking.
+
+### Changed
+
+- Updated TypeScript types: `Match.severity` and `DictionaryEntry.severity` now use `"low" | "medium" | "high"` union instead of `string`.
+- Bumped minimum Node engine from `>=12.0.0` to `>=16.0.0`.
+- Removed broken `lint` script (no ESLint config).
+
 ## [2.0.0] - 2026-07-17
 
 ### Added
