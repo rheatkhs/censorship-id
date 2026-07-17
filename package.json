@@ -1,15 +1,15 @@
 {
   "name": "censorship-id",
-  "version": "1.1.1",
-  "description": "A robust Indonesian profanity filter for detecting and masking inappropriate words.",
+  "version": "2.0.0",
+  "description": "A robust Indonesian profanity filter with severity levels, category detection, and leetspeak handling.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs"
     }
   },
   "files": [

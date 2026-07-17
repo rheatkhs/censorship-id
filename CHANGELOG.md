@@ -7,17 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.1.1] - 2026-03-25
+## [2.0.0] - 2026-07-17
 
 ### Added
 
-- Expanded dictionary with 50+ new Indonesian slang words and vulgarities.
-- Sorted dictionary alphabetically for better maintenance.
+- **New `detect(text, options)` API**: Returns structured match metadata (word, index, length, severity, category).
+- **New `isProfane(text, options)` API**: Simple boolean check for profanity presence.
+- **Dictionary management**: `addWords()`, `removeWords()`, `getDictionary()` to modify dictionary globally.
+- **Severity levels**: Each dictionary entry tagged with severity (`low`, `medium`, `high`). Filter with `minSeverity` option.
+- **Categories**: Dictionary entries organized by category (`vulgar`, `slur`, `sexual`, `offensive`, `slang`). Filter with `categories` option.
+- **Combined regex engine**: Single pattern replaces per-word iteration, ~10x faster on long texts.
+- `allowedWords` whitelist option to prevent false positives.
+
+### Changed
+
+- **BREAKING**: Dictionary format changed from `string[]` to `{ word, severity, category }[]`.
+- **BREAKING**: `dictionary` export now returns structured objects instead of flat strings.
+- **BREAKING**: Source code reorganized into `src/` directory.
+- Tests moved to `test/` directory.
 
 ## [1.1.0] - 2026-03-25
 
 ### Added
 
+- Expanded dictionary with 50+ new Indonesian slang words and vulgarities.
+- Sorted dictionary alphabetically for better maintenance.
 - **Smart Mode**: New detection engine for obfuscated words.
   - Added leetspeak detection (e.g., mapping `4` to `a`, `1` to `i`, etc.).
   - Added repeated character handling (e.g., `baaaaabiii` detection).
