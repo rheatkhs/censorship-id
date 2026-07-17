@@ -1,6 +1,6 @@
 {
   "name": "censorship-id",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A robust Indonesian profanity filter with severity levels, category detection, and leetspeak handling.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -20,7 +20,7 @@
     "dev": "tsup --watch",
     "test": "jest",
     "preversion": "npm test",
-    "version": "npm run build && git add dist"
+    "prepublishOnly": "npm run build"
   },
   "keywords": [
     "indonesia",
