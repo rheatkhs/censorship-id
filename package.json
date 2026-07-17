@@ -18,8 +18,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
-    "test": "jest",
-    "lint": "eslint ."
+    "test": "jest"
   },
   "keywords": [
     "indonesia",
@@ -33,8 +32,17 @@
   ],
   "author": "rheatkhs",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rheatkhs/censorship-id.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rheatkhs/censorship-id/issues"
+  },
+  "homepage": "https://github.com/rheatkhs/censorship-id#readme",
+  "sideEffects": false,
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=16.0.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",

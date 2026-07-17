@@ -11,7 +11,7 @@ export interface Match {
   /** The length of the matched text */
   length: number;
   /** The severity level of the matched word */
-  severity: string;
+  severity: "low" | "medium" | "high";
   /** The category of the matched word */
   category: string;
 }
@@ -21,7 +21,7 @@ export interface Match {
  */
 export interface DictionaryEntry {
   word: string;
-  severity: string;
+  severity: "low" | "medium" | "high";
   category: string;
 }
 
